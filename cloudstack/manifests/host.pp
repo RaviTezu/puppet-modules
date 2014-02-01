@@ -6,7 +6,7 @@ class cloudstack::host {
     package {'qemu-kvm':
         ensure => present,
     }
-    
+
     file{'/etc/libvirt/qemu.conf':
         ensure  => present,
         content => template('cloudstack/host/qemu_conf.erb'),
@@ -19,13 +19,13 @@ class cloudstack::host {
     package {'libvirt':
         ensure => present,
     }
-    
+
     service {'libvirtd':
         ensure  => running,
         enable  => true,
         require => Package['libvirt']
     }
-    
+
     file {'/etc/libvirt/libvirtd.conf':
         ensure  => present,
         content => template('cloudstack/host/libvirtd_conf.erb'),
@@ -33,9 +33,9 @@ class cloudstack::host {
         group   => 'root',
         mode    => '0644',
         require => Package['libvirt'],
-        notify  => Service['libvirtd']
+        notify  => Service['libvirtd'],
     }
-    
+
     file {'/etc/sysconfig/libvirtd':
         ensure  => present,
         content => template('cloudstack/host/sys_libvirtd.erb'),
@@ -43,16 +43,16 @@ class cloudstack::host {
         group   => 'root',
         mode    => '0644',
         require => Package['libvirt'],
-        notify  => Service['libvirtd']
+        notify  => Service['libvirtd'],
     }
-   
+
     package {'cloudstack-agent':
         ensure => present,
     }
-      
+
     service {'cloudstack-agent':
         ensure  => running,
         enable  => true,
         require => Package['cloudstack-agent']
     }
-}    
+}
