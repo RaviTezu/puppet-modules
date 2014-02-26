@@ -1,0 +1,29 @@
+# THIS FILE IS MANAGED BY PUPPET
+
+input {
+  file {
+     type => "syslog"
+     path => [ "/var/log/messages" ]
+     sincedb_path => "/var/cache/logstash/.sincedb"
+     debug => true
+     
+  }
+  file {
+     type => "puppet"
+     path => [ "/var/log/puppet/puppet.log" ]
+  }
+  file {
+     type => "maillog"
+     path => [ "/var/log/maillog" ]
+  }
+}
+
+output {
+    redis {
+        host => "<%= redis_host %>"
+        port => <%= redis_port %>
+        data_type => list
+        key => logstash
+      }
+    
+}
